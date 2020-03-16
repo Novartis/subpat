@@ -1,0 +1,55 @@
+Package: subpat
+Type: Package
+Version: 0.2
+Title: Subpopulation and subgroups shiny modules
+Description: subpat provides a collection of shiny modules to create subgroup and subpopulations as well as create ad-hoc table listings. These modules are featured in the two applications, the Patient Listing Generator (PLG) and the TTE analysis app.
+Authors@R: c(
+  person("Stefan", "Eng", email = "stefaneng13@gmail.com", role = c("aut", "cre"),
+  comment = c(ORCID = "0000-0002-5245-6507")),
+  person("Xiao", "Ni", email = "xiao.ni@novartis.com", role = c("aut")),
+  person("Mustapha", "Larbaoui", email = "mustapha.larbaoui@novartis.com", role = c("aut")),
+  person("Novartis", role = c("cph", "fnd"))
+  )
+Author: Stefan Eng <stefaneng13@gmail.com>
+Maintainer: Stefan Eng <stefaneng13@gmail.com>
+License: Apache License (>= 2.0)
+URL: https://opensource.nibr.com/subpat
+BugReports: https://github.com/Novartis/subpat/issues
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+Imports:
+    shiny,
+    shinyFiles,
+    shinydashboard,
+    xml2,
+    dplyr,
+    htmlwidgets,
+    DT,
+    shinyjs,
+    shinyjqui,
+    kableExtra,
+    devtools,
+    glue,
+    purrr,
+    R6,
+    shinycssloaders,
+    magrittr,
+    ggplot2,
+    scales,
+    survival,
+    broom,
+    haven,
+    htmlTable,
+    pander,
+    shinyEffects
+Depends:
+    bs4Dash,
+    tidymodules,
+    shinyBS
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr

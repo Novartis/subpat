@@ -1,0 +1,12 @@
+.badge-success {
+  background-color: #28a745;
+}
+
+/* Hide the icons based on if the accordion is hidden or not */
+a[aria-expanded="true"] .collapsed {
+  display: none;
+}
+
+a[aria-expanded="false"] .expanded {
+  display: none;
+}

@@ -1,0 +1,14 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.nb.html
+*.pdf
+dev/
+.Rprofile
+shiny_bookmarks/
+no_commit_examples/
+*.Rprofvis
+inst/doc
+docs
+no_commit/

@@ -1,0 +1,29 @@
+---
+title: "Time-to-event (TTE) analysis with subpat"
+author: "Stefan Eng"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    css:
+      - !expr system.file("rmarkdown/templates/html_vignette/resources/vignette.css", package = "rmarkdown")
+      - style.css
+vignette: >
+  %\VignetteIndexEntry{Time-to-event (TTE) analysis with subpat}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+library(tidymodules)
+library(shiny)
+library(subpat)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+Time-to-event (TTE) analysis with subpat
+
+## Conclusion

@@ -1,0 +1,166 @@
+---
+title: "TTE Module Integration"
+author: "Stefan Eng"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TTE Module Integration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE,
+  warning = FALSE
+)
+```
+
+## Introduction
+
+The TTE (time-to-event) modules are [`{tidymodules}`](https://opensource.nibr.com/tidymodules), which are R6 classes.
+The TTE collection of modules features three main modules:
+
+  - [TTE](#TTE)
+  - [TTEMapping](#TTEMapping)
+  - [SubgroupManager](#SubgroupManager)
+
+If you are integrating this into a project you generally will not need the Mapping module as you will already know which variables you will be including in your models.
+The mapping module is useful if you want to load multiple data sets that have inconsistent naming schemes, such as ADaM and NOVDD.
+
+Before including these in your application it is good to be familiar with standard Shiny modules.
+A good introduction is available here: https://shiny.rstudio.com/articles/modules.html
+
+## TTE {#TTE}
+The TTE Module features include:
+
+  - Kaplan Meier Survival Plot
+  - Event summary tables
+  - Cox proportional hazard model
+    - Forest plot
+    - Hazard ratio estimates and confidence intervals
+    
+
+We can run this example with the following code:
+```{r}
+subpat::subpatExamples("06_tte_simple")
+```
+
+There are a few main parts that are different from regular Shiny modules.
+The first step is that we need to _initialize_ the module with
+
+```{r, eval = T}
+library(subpat)
+tteModule <- TTE$new()
+```
+
+We can optionally give our module an id by passing `id = my_id` as a parameter to `new`.
+The module will dynamically create an id if we do not specify one.
+We can see what the module looks like by printing it
+
+```{r, eval = T}
+tteModule
+```
+
+Here we can see the namespace that was generated, the input ports and the output ports.
+You can think of the input ports as the parameters to a function.
+The output ports are the values that are returned from the module.
+Here we can see that there is nothing being returned, since this module just displays data.
+We can refer to the input or output ports by name or by number.
+In the TTE modules, options is always the last input port.
+
+The next step is to call our module somewhere in the server function:
+```{r, eval = F}
+tteModule$callModule()
+```
+
+This is identical to using Shiny's `callModule` function except that we do not have to keep track of the id of the module.
+
+The next step is to pass data and options into our module.
+There are two ways to pass data into a TidyModule: through pipes, and explictly.
+The elegant way to do this with tidymodules (and why is is named _tidy_ modules), is through pipes.
+The basic formula to pass data into a module is `my_reactive %>j% MyModule`.
+This will pass the `my_reactive` reactive value into the jth input port of `MyModule`.
+Let's try this with the TTE module:
+
+```{r, eval = F}
+
+# Create a reactive of the NCCTG Lung Cancer Data Set from the survival package
+data_reactive <- reactive({
+  survival::lung
+})
+
+# Pass the data into the TTE module
+# This needs to be in a server function and reactive context:
+# E.g: isolate, observe, observeEvent, etc.
+isolate({
+  data_reactive %>1% tteModule
+})
+```
+
+Now we have the data passed into the module. Currently the module will not do much since it expects the `mapping` parameter to be provided.
+The mapping is a reactive list of values that map the variables from your data set into the correct parameter.
+The parameters are:
+
+  - `time`
+  - `event`
+  - `treatment`
+  - `strata`
+  - `parameter`
+  - `parameter_value`
+  - `population`
+  - `aval_conv`
+  
+```{r, eval = F}
+# Set the variable names to use in the model
+# See the information about the variables with
+# help(lung)
+mapping <- reactive({
+  list(
+    time = 'time',
+    event = 'status',
+    treatment = 'sex',
+    # Conversion factor: makes the time number of months.
+    aval_conv = 30.34
+  )
+})
+
+# Pass the mapping into the second input port
+isolate({
+  mapping %>2% tteModule
+})
+```
+
+We can also pass options into the module in a similar way.
+Options expects a reactive function.
+There are two options that we can pass into the module:
+
+  -  `makePlotly` Should the graph be interactive via plotly? Note, enabling this is experimental and the survival plots do not always look great. Default: `FALSE`
+  - `conftype` The confidence interval type. Choice between: "none", "plain", "log", or "log-log". Default: "log-log"
+  
+```{r, eval = F}
+options <- reactive(list(
+    makePlotly = FALSE,
+    conftype = "log-log"
+  ))
+
+isolate({
+  options %>4% tteModule
+})
+```
+
+That's all you need to include the TTE module in your application. The full application is available below:
+
+```{r, code = readLines(system.file("shiny-examples/06_tte_simple/app.R", package = "subpat"))}
+```
+
+## SubgroupManager {#SubgroupManager}
+
+The subgroup module is currently a prototype, which is not as full featured as I would like.
+If you would like to test it out anyway, the code is easy to integrate into your own application.
+
+```{r, code = readLines(system.file("shiny-examples/08_subgroup/app.R", package = "subpat"))}
+```
+
