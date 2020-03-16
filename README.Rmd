@@ -17,7 +17,11 @@ knitr::opts_chunk$set(
 
 # subpat
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/Novartis/subpat.svg?branch=master)](https://travis-ci.org/Novartis/subpat)
+<!-- badges: end -->
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
+
 
 > This package is NOT VALIDATED, and should be reserved for exploratory analysis only.
 

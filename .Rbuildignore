@@ -6,3 +6,4 @@
 ^doc$
 ^renv$
 ^renv\.lock$
+^\.travis\.yml$
