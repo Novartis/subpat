@@ -3,7 +3,7 @@
 
 # subpat
 
-<https://img.shields.io/badge/lifecycle-experimental-orange.svg>
+![https://img.shields.io/badge/lifecycle-experimental-orange.svg](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 > This package is NOT VALIDATED, and should be reserved for exploratory
 > analysis only.
