@@ -51,5 +51,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown
+Remotes: 
+    Novartis/tidymodules
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
