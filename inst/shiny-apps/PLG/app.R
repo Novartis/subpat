@@ -45,8 +45,9 @@ ui <- tagList(
           bs4TabItems(
             bs4TabItem(
               tabName = "loadData",
-              fileInput("fileupload", "Choose SAS Files",
-                        accept = c(".sas7bdat"),
+              actionButton("examplebutton", label = "Use example data"),
+              fileInput("fileupload", "Choose .xpt Files",
+                        accept = c(".xpt"),
                         multiple = TRUE
               ),
               bs4Alert(
@@ -90,14 +91,32 @@ server <- function(input, output, session){
     )
   )
   
+  v <- reactiveValues(datalist = NULL)
+  
   data_reactive <- reactive({
     req(input$fileupload)
-    datalist <- lapply(input$fileupload$datapath, haven::read_sas)
-    # Make the names of the data sets the name of the file without extension
-    names(datalist) <- toupper(tools::file_path_sans_ext(basename(input$fileupload$name)))
+   
     print(names(datalist))
     datalist
   })
+  
+  observeEvent(input$fileupload, {
+    datalist <- lapply(input$fileupload$datapath, haven::read_xpt)
+    # Make the names of the data sets the name of the file without extension
+    names(datalist) <- toupper(tools::file_path_sans_ext(basename(input$fileupload$name)))
+    v$datalist <- datalist
+  })
+  
+  observeEvent(input$examplebutton, {
+    path <- "sample_data/cdisc"
+    
+    ex_files <- list.files(system.file(path, package = "subpat"), full.names = TRUE)
+    v$datalist <- lapply(ex_files, haven::read_xpt)
+    names(v$datalist) <- toupper(tools::file_path_sans_ext(basename(ex_files)))
+    
+    v$message <- "Example files loaded"
+  })
+  
     
   observe({
     # Pass in the options
@@ -106,10 +125,10 @@ server <- function(input, output, session){
     
     # Pass the data set into the subpopulation module
     # Then pass the populations into the variable selection module
-    data_reactive %>1% subpopulationModule %1>2% tableListingModule
+    reactive(v$datalist) %>1% subpopulationModule %1>2% tableListingModule
     
     # Pass the data sets into the variable selection module
-    data_reactive %>1% tableListingModule
+    reactive(v$datalist) %>1% tableListingModule
   })
 }
 
