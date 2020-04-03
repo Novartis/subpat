@@ -1,6 +1,5 @@
-library(bs4Dash)
-library(shiny)
 library(tidymodules)
+library(bs4Dash)
 library(dplyr)
 
 library(subpat)
@@ -17,7 +16,7 @@ ui <- tagList(
   shinyjs::useShinyjs(),
   bs4DashPage(
     sidebar_collapsed = TRUE,
-    controlbar_collapsed = TRUE,
+    controlbar_collapsed = FALSE,
     navbar = bs4DashNavbar(
       
     ),
@@ -95,20 +94,17 @@ ui <- tagList(
           fluidRow(
             column(
               width = 6,
-              textInput('datapath', 'Data set path',
-                        #value = "/view/engst2_view/vob/CLEE011F/CLEE011F2301/csr_1/analysis_data/adrecsl.sas7bdat",
-                        value = "/Users/larbamu2/OneDrive\ -\ Novartis\ Pharma\ AG/data/sas/adrecsl.sas7bdat",
-                        width = "100%")
-            ),
-            column(
-              width = 2,
-              style = "margin-top: 28px",
-              actionButton('load', 'Load path')
-            )
+              p("Using example data from: https://github.com/phuse-org/phuse-scripts/blob/master/data/adam/cdisc/adtte.xpt")
+            )#,
+            #column(
+            #  width = 2,
+            #  style = "margin-top: 28px",
+            #  actionButton('load', 'Load path')
+            #)
           ),
-          fluidRow(
-            textOutput('fileloaded')
-          )
+          # fluidRow(
+          #   textOutput('fileloaded')
+          # )
         ),
         bs4TabItem(
           tabName = "subpop",
@@ -135,7 +131,7 @@ ui <- tagList(
         ),
         bs4TabItem(
           tabName = "modStore",
-          store$ui()
+          # store$ui()
         )
       )
     )
@@ -160,12 +156,16 @@ server <- function(input, output, session) {
 
   data_basename <- reactive({
     # Only the filename without path and extension
-    toupper(tools::file_path_sans_ext(basename(input$datapath)))
+    # toupper(tools::file_path_sans_ext(basename(input$datapath)))
+    "ADTTE"
   })
 
-  data_reactive <- eventReactive(input$load, {
-    haven::read_sas(input$datapath)
-  })
+  data_reactive <- reactive({
+    adtte_path <- system.file("sample_data/cdisc_tte/adtte.xpt", package = "subpat")
+    haven::read_xpt(adtte_path)
+  })#eventReactive(input$load, {
+    #haven::read_xpt(input$datapath)
+  #})
 
   data_reactive_pop <- reactive({
     d <- data_reactive()

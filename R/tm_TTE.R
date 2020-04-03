@@ -301,7 +301,8 @@ TTE <- R6Class(
       survModel <- reactive({
         req(data_react())
         m <- mapping()
-        survival::survfit(as.formula(getFormulaStr()), data=data_react(), conf.type = conftype())
+        model <- survival::survfit(as.formula(getFormulaStr()), data=data_react(), conf.type = conftype())
+        model
       })
       
       survDiffModel <- reactive({

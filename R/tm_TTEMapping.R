@@ -223,7 +223,7 @@ TTEMapping <- R6Class(
         local_rv$selected <- list(
           time = ifelse("AVAL" %in% names(d), "AVAL", ""),
           event = ifelse("EVENT" %in% names(d), "EVENT", ""),
-          treatment = ifelse("TRT01P" %in% names(d), "TRT01P", ""),
+          treatment = ifelse("TRTP" %in% names(d), "TRTP", ""),
           parameter = ifelse("PARAM" %in% names(d), "PARAM", ""),
           population = ifelse("FASFL" %in% names(d), "FASFL", "")
         )
