@@ -1,5 +1,5 @@
-library(subpat)
 library(tidymodules)
+library(subpat)
 library(bs4Dash)
 
 subpopulationModule <- SubpopulationManager$new()

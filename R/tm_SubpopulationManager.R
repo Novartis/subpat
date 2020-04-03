@@ -107,7 +107,7 @@ SubpopulationManager <- R6Class(
             tagList(box(
               height = "25%",
               width = 12,
-              title = fluidRow(column(3,
+              title = fluidRow(column(6,
                                       span("Populations")),
                                column(2,
                                       uiOutput(
