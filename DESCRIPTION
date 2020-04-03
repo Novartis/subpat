@@ -42,7 +42,8 @@ Imports:
     haven,
     htmlTable,
     pander,
-    shinyEffects
+    shinyEffects,
+    plotly
 Depends:
     bs4Dash,
     tidymodules,
