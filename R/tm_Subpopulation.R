@@ -144,9 +144,9 @@ Subpopulation <- R6Class(
           box(height = "25%",
                 width = 12,
                 title = fluidRow(
-                  column(3, 
+                  column(6, 
                          span("Edit Population")),
-                  column(8,               
+                  column(6,               
                          # Number of filters
                          uiOutput(self$ns('filterCountUi'), inline = TRUE),
                          # Number of patients

@@ -131,7 +131,7 @@ ui <- tagList(
         ),
         bs4TabItem(
           tabName = "modStore",
-          # store$ui()
+          store$ui()
         )
       )
     )

@@ -125,30 +125,28 @@ Filter <- R6Class(
         bs4AccordionItemExpanded(id = self$ns('accordItem'),
                                  expanded = TRUE,
                                  status = 'default',
-                                 title = fluidRow(
-                                   class = "filterAccordHeader",
-                                   column(2, 
+                                 title = div(
+                                   class = "d-flex justify-content-between filterAccordHeader",
+                                   div(class = "p-2", 
                                           actionButtonStatus(
                                             self$ns("deleteButton"),
                                             label = NULL,
                                             status = "danger",
-                                            icon = icon('trash-alt')),
-                                          
+                                            icon = icon('trash-alt'))),
+                                   div(class = "p-2",
                                           actionButtonStatus(
                                             self$ns("showPatientsButton"),
                                             label = NULL,
                                             status = "primary",
                                             icon = icon('users'),
-                                            onclick = "(function(e) { e.preventDefault(); e.stopPropagation(); })(event)")
-                                          
-                                   ),
+                                            onclick = "(function(e) { e.preventDefault(); e.stopPropagation(); })(event)")),
                                    # The dataset and variable
-                                   column(3, uiOutput(self$ns('accordTitleCol2'))),
+                                   div(class = "p-2", uiOutput(self$ns('accordTitleCol2'))),
                                    # The filter
-                                   column(4, uiOutput(self$ns('accordTitleCol3'))),
+                                   div(class = "p-2",  uiOutput(self$ns('accordTitleCol3'))),
                                    # The badge
-                                   column(2, uiOutput(self$ns('accordTitleCol4'))),
-                                   column(1, 
+                                   div(class = "p-2",  uiOutput(self$ns('accordTitleCol4'))),
+                                   div(class = "p-2", 
                                           div(
                                             class = "collapse-icons",
                                             icon('angle-double-down', class = "collapsed fa-2x"),

@@ -144,14 +144,16 @@ TTEMapping <- R6Class(
       })
     },
     ui = function() {
-      tagList(
+      fluidRow(
         checkboxInput(self$ns('showLabels'), label='Show the variable labels?', value = T),
-        uiOutput(self$ns("selectPopUi")),
-        uiOutput(self$ns("selectTimeUi")),
-        uiOutput(self$ns("selectEventUi")),
-        uiOutput(self$ns("selectTreatmentUi")),
-        uiOutput(self$ns("selectParamUi")),
-        uiOutput(self$ns("selectParamValUi"))
+        column(6,
+               uiOutput(self$ns("selectPopUi")),
+               uiOutput(self$ns("selectTimeUi")),
+               uiOutput(self$ns("selectEventUi"))),
+        column(6,               
+               uiOutput(self$ns("selectTreatmentUi")),
+               uiOutput(self$ns("selectParamUi")),
+               uiOutput(self$ns("selectParamValUi")))
       )
     },
     server = function(input, output, session){
