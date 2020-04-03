@@ -1,6 +1,6 @@
 Package: subpat
 Type: Package
-Version: 0.3.1
+Version: 0.3.2
 Title: Subpopulation and subgroups shiny modules
 Description: subpat provides a collection of shiny modules to create subgroup and subpopulations as well as create ad-hoc table listings. These modules are featured in the two applications, the Patient Listing Generator (PLG) and the TTE analysis app.
 Authors@R: c(
@@ -43,7 +43,8 @@ Imports:
     htmlTable,
     pander,
     shinyEffects,
-    plotly
+    plotly,
+    shinyWidgets
 Depends:
     bs4Dash,
     tidymodules,
