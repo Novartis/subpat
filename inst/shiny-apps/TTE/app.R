@@ -94,17 +94,28 @@ ui <- tagList(
           fluidRow(
             column(
               width = 6,
-              p("Using example data from: https://github.com/phuse-org/phuse-scripts/blob/master/data/adam/cdisc/adtte.xpt")
-            )#,
-            #column(
-            #  width = 2,
-            #  style = "margin-top: 28px",
-            #  actionButton('load', 'Load path')
-            #)
+              conditionalPanel("! output.fileuploaded",
+                p("Using example data from: https://github.com/phuse-org/phuse-scripts/blob/master/data/adam/cdisc/adtte.xpt")
+              ),
+              fileInput("fileupload", "Choose .xpt file",
+                        accept = c(".xpt")
+            ))
           ),
-          # fluidRow(
-          #   textOutput('fileloaded')
-          # )
+          fluidRow(
+             textOutput('fileloaded')
+          ),
+          fluidRow(
+            p("subpat is a collection of package to help with common tasks for people in pharma doing exploratory data analysis using ADaM datasets. The main features include"),
+            tags$ul(
+              tags$li("Creating and editing subpopulations"),
+              tags$li("Creating subgroups"),
+              tags$li("Basic time-to-event analysis with flexible variable mapping"),
+              tags$li("Includes Kaplan-Meier plots and Cox Ph models")
+            ),
+            p("Users such as medical writers can use the subpopulation features (via the PLG app in subpat) to create ad-hoc reports. Developers can easily plug-and-play the modules into their own applications."),
+            p("One of the novel features of subpat is the use of tidymodules to manage complex nested modules in shiny. Tidymodules provides a new object-oriented programming (OOP) approach for module development, new module interface using input/output ports and a set of tidy operators for handling cross-module communication."),
+            p("The bulk of this work was developed over the summer during my internship at Novartis in the SCC (Scientific computing and consulting) group.")
+          )
         ),
         bs4TabItem(
           tabName = "subpop",
@@ -161,11 +172,13 @@ server <- function(input, output, session) {
   })
 
   data_reactive <- reactive({
-    adtte_path <- system.file("sample_data/cdisc_tte/adtte.xpt", package = "subpat")
-    haven::read_xpt(adtte_path)
-  })#eventReactive(input$load, {
-    #haven::read_xpt(input$datapath)
-  #})
+    if(is.null(input$fileupload)) {
+      adtte_path <- system.file("sample_data/cdisc_tte/adtte.xpt", package = "subpat")
+      haven::read_xpt(adtte_path) 
+    } else {
+      haven::read_xpt(input$fileupload$datapath)
+    }
+  })
 
   data_reactive_pop <- reactive({
     d <- data_reactive()
@@ -228,6 +241,10 @@ server <- function(input, output, session) {
   output$fileloaded <- renderText({
     req(input$datapath, input$load)
     paste0("Loaded file: ", basename(input$datapath))
+  })
+  
+  output$fileuploaded <- reactive({
+    !is.null(input$fileupload)
   })
 
   output$dataloaded <- reactive({
